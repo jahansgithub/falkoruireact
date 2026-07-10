@@ -1,0 +1,79 @@
+.app-sidebar {
+  width: 90px;
+  min-height: 100vh;
+  background: #12203b;
+  color: #cfd8e3;
+}
+
+.sidebar-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.sidebar-env {
+  font-size: 0.75rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.sidebar-version {
+  font-size: 0.65rem;
+  color: #7f8ba3;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-orange { background: #f5a623; }
+.dot-green { background: #4caf50; }
+.dot-green-light { background: #8bc98e; }
+
+.add-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: #5b6bf5;
+  color: #fff;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.add-btn:hover { background: #4a58d8; }
+
+.sidebar-section-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: #7f8ba3;
+  text-align: center;
+}
+
+.app-sidebar .nav-link {
+  color: #a9b7cc;
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 0.5rem 0.25rem;
+  border-radius: 0.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.app-sidebar .nav-link.active,
+.app-sidebar .nav-link:hover {
+  background: #1e3358;
+  color: #fff;
+}
+
+.icon-btn {
+  color: #7f8ba3;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.icon-btn:hover { color: #fff; }

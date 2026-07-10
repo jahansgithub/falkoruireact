@@ -1,0 +1,11 @@
+.dashboard-layout {
+  min-height: 100vh;
+}
+
+.dashboard-main {
+  min-width: 0; /* prevents flex overflow with wide content like graph canvas */
+}
+
+.dashboard-content {
+  overflow: auto;
+}

@@ -1,0 +1,43 @@
+.app-topbar {
+  background: #fff;
+  border-bottom: 1px solid #e5e9f0;
+}
+
+.graph-select {
+  border: 1px solid #d9dee6;
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  color: #444;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.query-input {
+  border: 1px solid #d9dee6;
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  outline: none;
+}
+.query-input:focus {
+  border-color: #5b6bf5;
+}
+
+.run-btn {
+  background: #5b6bf5;
+  color: #fff;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.4rem 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.run-btn:hover { background: #4a58d8; }
+
+.topbar-icons i {
+  color: #8a94a6;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.topbar-icons i:hover { color: #333; }
