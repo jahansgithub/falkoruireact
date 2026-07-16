@@ -1,11 +1,18 @@
 .dashboard-layout {
-  min-height: 100vh;
+ height: 100vh;        /* was min-height — change to fixed height */
+  overflow: hidden; 
 }
 
 .dashboard-main {
-  min-width: 0; /* prevents flex overflow with wide content like graph canvas */
+  min-width: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .dashboard-content {
-  overflow: auto;
+ flex: 1;               /* takes remaining height after Topbar */
+  min-height: 0;         /* critical — allows flex child to shrink below content size */
+  position: relative;
+  overflow: hidden; 
 }

@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/images.png';
 import "./css/Sidebar.css";
+import { useGraphStore } from '../../store/graphStore';
 
 export default function Sidebar() {
   return (
