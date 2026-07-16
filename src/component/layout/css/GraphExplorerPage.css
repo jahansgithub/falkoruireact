@@ -1,0 +1,7 @@
+.node-detail-panel {
+  width: 280px;
+  min-width: 280px;
+  background: #fff;
+  border-left: 1px solid #e5e9f0;
+  overflow-y: auto;
+}
