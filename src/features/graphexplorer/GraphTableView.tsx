@@ -1,14 +1,21 @@
 import type { GraphQueryResult } from '../../types/graph.type';
 
 export default function GraphTableView({ data }: { data: GraphQueryResult }) {
+  // Collect every unique property key across all nodes, in first-seen order
+  const allKeys = Array.from(
+    new Set(data.nodes.flatMap((node) => Object.keys(node.data ?? {})))
+  );
+
   return (
     <div className="p-3 h-100" style={{ overflow: 'auto' }}>
-      <table className="table table-sm">
+      <table className="table table-sm table-bordered">
         <thead>
           <tr>
             <th>ID</th>
             <th>Labels</th>
-            <th>Properties</th>
+            {allKeys.map((key) => (
+              <th key={key}>{key}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -16,7 +23,9 @@ export default function GraphTableView({ data }: { data: GraphQueryResult }) {
             <tr key={node.id}>
               <td>{node.id}</td>
               <td>{node.labels.join(', ')}</td>
-              <td>{JSON.stringify(node.data)}</td>
+              {allKeys.map((key) => (
+                <td key={key}>{String(node.data?.[key] ?? '')}</td>
+              ))}
             </tr>
           ))}
         </tbody>

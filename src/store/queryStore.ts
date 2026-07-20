@@ -1,6 +1,8 @@
 import { create } from 'zustand';
-import type { GraphQueryResult } from '../types/graph.types';
-import { sampleGraphData } from '../lib/sampleGraphData';
+import type { GraphQueryResult } from '../types/graph.type';
+import { executeQuery } from '../api/graphApi';
+import { mapApiResponseToGraphData } from '../lib/mapApiResponseToGraphData';
+import { useGraphStore } from './graphStore';
 
 interface QueryStore {
   query: string;
@@ -21,20 +23,30 @@ export const useQueryStore = create<QueryStore>((set, get) => ({
 
   runQuery: async () => {
     const { query } = get();
+
     if (!query.trim()) {
       set({ error: 'Query cannot be empty', result: null });
+      return;
+    }
+
+    const selectedGraph = useGraphStore.getState().selectedGraph;
+    if (!selectedGraph) {
+      set({ error: 'Select a graph first', result: null });
       return;
     }
 
     set({ loading: true, error: null });
 
     try {
-      // TODO: replace with real call to your Spring Boot endpoint
-      // const { data } = await apiClient.post('/graph/query', { query });
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      set({ result: sampleGraphData, loading: false });
+      const apiResponse = await executeQuery(selectedGraph.name, query);
+      const graphData = mapApiResponseToGraphData(apiResponse);
+      set({ result: graphData, loading: false });
     } catch (err: any) {
-      set({ error: 'Failed to run query', loading: false, result: null });
+      set({
+        error: err.response?.data?.message || err.message || 'Failed to run query',
+        loading: false,
+        result: null,
+      });
     }
   },
 }));
