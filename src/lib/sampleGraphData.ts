@@ -1,4 +1,4 @@
-import type { GraphQueryResult } from '../types/graph.types';
+import type { GraphQueryResult } from '../types/graph.type';
 
 export const sampleGraphData: GraphQueryResult = {
   nodes: [

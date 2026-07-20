@@ -17,25 +17,22 @@ export default function GraphExplorerPage() {
   const view = useViewStore((state) => state.view);
 
   // Combined: register click handlers AND push data, together, whenever result changes
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    console.log('Canvas ref:', canvas);
-  console.log('setConfig exists?', typeof canvas?.setConfig)
-    if (!canvas || !result) return;
+useEffect(() => {
+  const canvas = canvasRef.current;
+  if (!canvas || !result || view !== 'graph') return;
 
-    canvas.setConfig({
-      debug: true,
-      eventHandlers: {
-        onNodeClick: (node: any) => {
-          console.log('Clicked node:', node); // temporary — confirm this fires
-          selectNode(node);
-        },
-        onBackgroundClick: () => selectNode(null),
+  canvas.setConfig({
+    eventHandlers: {
+      onNodeClick: (node: any, event: MouseEvent) => {
+        event?.stopPropagation?.();
+        selectNode(node);
       },
-    });
+      onBackgroundClick: () => selectNode(null),
+    },
+  });
 
-    canvas.setData(result);
-  }, [result]);
+  canvas.setData(result);
+}, [result, view]);
 
   if (loading) {
     return (
@@ -77,7 +74,7 @@ export default function GraphExplorerPage() {
     <div className="d-flex h-100">
       <falkordb-canvas
         ref={canvasRef}
-        style={{ width: '100%', height: '100%', display: 'block' }}
+     style={{ flex: 1, height: '100%', display: 'block', minWidth: 0 }}
       />
       <NodeDetailPanel />
     </div>

@@ -5,10 +5,11 @@ import { useViewStore } from '../../store/viewStore';
 import './css/DashboardLayout.css';
 
 export default function DashboardLayout() {
-   const view = useViewStore((state) => state.view);
+  const view = useViewStore((state) => state.view);
   const setView = useViewStore((state) => state.setView);
+
   return (
-<div className="dashboard-layout d-flex">
+    <div className="dashboard-layout d-flex">
       <Sidebar />
       <div className="dashboard-main flex-grow-1 d-flex flex-column">
         <Topbar />
