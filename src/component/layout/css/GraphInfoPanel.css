@@ -1,0 +1,45 @@
+.graph-info-panel {
+  position: relative;
+  height: 100%;
+  background: #fff;
+  border-right: 1px solid #e5e9f0;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.graph-info-header {
+  border-bottom: 1px solid #e5e9f0;
+  font-size: 0.9rem;
+}
+
+.graph-info-body {
+  font-size: 0.85rem;
+}
+
+.info-chip {
+  color: #fff;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+}
+
+.info-chip-outline {
+  border: 1px solid #d9dee6;
+  color: #444;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+}
+
+.graph-info-resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+}
+.graph-info-resize-handle:hover {
+  background: #5b6bf5;
+}

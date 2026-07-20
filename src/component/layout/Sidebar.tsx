@@ -2,8 +2,10 @@ import { NavLink } from 'react-router-dom';
 import logo from '../../assets/images.png';
 import "./css/Sidebar.css";
 import { useGraphStore } from '../../store/graphStore';
+import { useInfoPanelStore } from '../../store/infoPanelStore';
 
 export default function Sidebar() {
+  const toggleInfoPanel = useInfoPanelStore((state) => state.toggle);
   return (
     <nav className="app-sidebar d-flex flex-column">
       <div className="sidebar-top text-center py-3">
@@ -33,7 +35,7 @@ export default function Sidebar() {
           </li>
           <li className="nav-item">
             <NavLink to="/datasets" className="nav-link">
-              <i className="bi bi-database me-2"></i>Datasets
+              <i  onClick={toggleInfoPanel} className="bi bi-database me-2"></i>Datasets
             </NavLink>
           </li>
         </ul>
