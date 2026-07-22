@@ -41,3 +41,53 @@
   cursor: pointer;
 }
 .topbar-icons i:hover { color: #333; }
+
+.query-editor {
+  position: relative;
+  display: flex;
+  border: 1px solid #d9dee6;
+  border-radius: 0.4rem;
+  background: #fff;
+  transition: all 0.15s ease;
+}
+
+.query-editor-expanded {
+  border-color: #5b6bf5;
+  max-height: 220px;
+  z-index: 20;
+}
+
+.query-line-numbers {
+  flex-shrink: 0;
+  padding: 0.4rem 0.5rem 0.4rem 0.75rem;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #9aa3b2;
+  text-align: right;
+  user-select: none;
+  overflow: hidden;
+  background: #fafbfc;
+  border-right: 1px solid #eceff3;
+  max-height: 220px;
+}
+
+.query-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 0.4rem 0.75rem;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #4a5568;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.query-editor-expanded .query-input {
+  white-space: pre-wrap;
+  overflow-y: auto;
+  max-height: 220px;
+}

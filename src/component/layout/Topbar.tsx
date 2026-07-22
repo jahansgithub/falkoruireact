@@ -12,6 +12,20 @@ export default function Topbar() {
   const runQuery = useQueryStore((state) => state.runQuery);
   const loading = useQueryStore((state) => state.loading);
 
+  const [lineCount, setLineCount] = useState(1);
+const lineNumbersRef = useRef<HTMLDivElement>(null);
+
+const handleScroll = () => {
+  if (lineNumbersRef.current && textareaRef.current) {
+    lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop;
+  }
+};
+
+const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  setQuery(e.target.value);
+  setLineCount(e.target.value.split('\n').length);
+};
+
   return (
     <div className="app-topbar d-flex align-items-center gap-3 px-3 py-2">
       <Dropdown>
@@ -29,14 +43,27 @@ export default function Topbar() {
         </Dropdown.Menu>
       </Dropdown>
 
-      <input
-        type="text"
-        className="query-input flex-grow-1"
-        placeholder="Type your query here to start"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && runQuery()}
-      />
+   <div className={`query-editor flex-grow-1 ${isFocused ? 'query-editor-expanded' : ''}`}>
+  {isFocused && (
+    <div className="query-line-numbers" ref={lineNumbersRef}>
+      {Array.from({ length: lineCount }, (_, i) => (
+        <div key={i}>{i + 1}</div>
+      ))}
+    </div>
+  )}
+  <textarea
+    ref={textareaRef}
+    className="query-input"
+    placeholder="Type your query here to start"
+    value={query}
+    onChange={handleChange}
+    onScroll={handleScroll}
+    onFocus={() => setIsFocused(true)}
+    onBlur={() => setIsFocused(false)}
+    onKeyDown={handleKeyDown}
+    rows={1}
+  />
+</div>
 
       <button className="run-btn" onClick={runQuery} disabled={loading}>
         {loading ? '...' : 'RUN'}
