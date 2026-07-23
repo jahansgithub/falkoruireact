@@ -5,3 +5,40 @@
   border-left: 1px solid #e5e9f0;
   overflow-y: auto;
 }
+
+.node-search-wrapper {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 280px;
+  z-index: 15;
+}
+
+.node-search-input {
+  width: 100%;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #d9dee6;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.node-search-suggestions {
+  margin-top: 4px;
+  background: #fff;
+  border: 1px solid #e5e9f0;
+  border-radius: 0.4rem;
+  max-height: 240px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.node-search-suggestion-item {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.node-search-suggestion-item:hover {
+  background: #f5f7fa;
+}

@@ -5,6 +5,7 @@ import { useSelectionStore } from '../../store/selectionStore';
 import { useViewStore } from '../../store/viewStore';
 import NodeDetailPanel from '../graphexplorer/NodeDetailPanel';
 import GraphTableView from '../graphexplorer/GraphTableView';
+import NodeSearchInput from './component/NodeSearchInput';
 
 export default function GraphExplorerPage() {
   const canvasRef = useRef<any>(null);
@@ -23,6 +24,7 @@ useEffect(() => {
 
   canvas.setConfig({
     eventHandlers: {
+      captionsKeys: ['name'], 
       onNodeClick: (node: any, event: MouseEvent) => {
         event?.stopPropagation?.();
         selectNode(node);
@@ -71,7 +73,8 @@ useEffect(() => {
   }
 
   return (
-    <div className="d-flex h-100">
+    <div className="d-flex h-100" style={{ position: 'relative' }}>
+      <NodeSearchInput canvasRef={canvasRef} />
       <falkordb-canvas
         ref={canvasRef}
      style={{ flex: 1, height: '100%', display: 'block', minWidth: 0 }}
