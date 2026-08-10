@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useQueryStore } from '../../../store/queryStore';
 import { useSelectionStore } from '../../../store/selectionStore';
+import { computeGraphInfo } from '../../../lib/computeGraphInfo';
 
 interface NodeSearchInputProps {
   canvasRef: React.RefObject<any>;
@@ -13,11 +14,24 @@ export default function NodeSearchInput({ canvasRef }: NodeSearchInputProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const activeItemRef = useRef<HTMLDivElement>(null);
 
-  const matches = (result?.nodes ?? []).filter((node: any) =>
-    query.trim() &&
-    String(node.data?.name ?? '').toLowerCase().includes(query.toLowerCase())
-  );
+  useEffect(() => {
+    activeItemRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [activeIndex]);
+
+  // Build a label -> color lookup so each suggestion can show its tag
+  const { labels: labelInfo } = computeGraphInfo(result);
+  const labelColorMap = new Map(labelInfo.map((l) => [l.name, l.color]));
+
+  const matches = (result?.nodes ?? []).filter((node: any) => {
+    if (!query.trim()) return false;
+    const name = String(node.data?.name ?? '').toLowerCase();
+    const id = String(node.id ?? '').toLowerCase();
+    const labelsStr = (node.labels ?? []).join(' ').toLowerCase();
+    const q = query.toLowerCase();
+    return name.includes(q) || id.includes(q) || labelsStr.includes(q);
+  });
 
   const handleSelect = (node: any) => {
     const canvas = canvasRef.current;
@@ -70,11 +84,25 @@ export default function NodeSearchInput({ canvasRef }: NodeSearchInputProps) {
           {matches.map((node: any, index: number) => (
             <div
               key={node.id}
+              ref={index === activeIndex ? activeItemRef : null}
               className={`node-search-suggestion-item ${index === activeIndex ? 'active' : ''}`}
               onMouseDown={() => handleSelect(node)}
               onMouseEnter={() => setActiveIndex(index)}
             >
-              {node.data?.name ?? `Node ${node.id}`}
+              <span className="node-search-result-label">
+                {node.data?.name ?? `Node ${node.id}`}
+              </span>
+              <span className="node-search-tags">
+                {(node.labels ?? []).map((label: string) => (
+                  <span
+                    key={label}
+                    className="node-search-tag"
+                    style={{ backgroundColor: labelColorMap.get(label) ?? '#9ca3af' }}
+                  >
+                    {label}
+                  </span>
+                ))}
+              </span>
             </div>
           ))}
         </div>
