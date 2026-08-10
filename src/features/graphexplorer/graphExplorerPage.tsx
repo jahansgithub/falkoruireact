@@ -3,9 +3,11 @@ import '@falkordb/canvas';
 import { useQueryStore } from '../../store/queryStore';
 import { useSelectionStore } from '../../store/selectionStore';
 import { useViewStore } from '../../store/viewStore';
+import { useLegendStore } from '../../store/legendStore';
 import NodeDetailPanel from '../graphexplorer/NodeDetailPanel';
 import GraphTableView from '../graphexplorer/GraphTableView';
 import NodeSearchInput from './component/NodeSearchInput';
+import GraphLegendPanel from './component/GraphLegendPanel';
 
 export default function GraphExplorerPage() {
   const canvasRef = useRef<any>(null);
@@ -17,24 +19,37 @@ export default function GraphExplorerPage() {
   const selectNode = useSelectionStore((state) => state.selectNode);
   const view = useViewStore((state) => state.view);
 
-  // Combined: register click handlers AND push data, together, whenever result changes
-useEffect(() => {
-  const canvas = canvasRef.current;
-  if (!canvas || !result || view !== 'graph') return;
+  const hiddenLabels = useLegendStore((state) => state.hiddenLabels);
+  const hiddenRelationships = useLegendStore((state) => state.hiddenRelationships);
 
-  canvas.setConfig({
-    eventHandlers: {
-      captionsKeys: ['name'], 
-      onNodeClick: (node: any, event: MouseEvent) => {
-        event?.stopPropagation?.();
-        selectNode(node);
+  // Combined: register click handlers AND push data, together, whenever result or legend filters change
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || !result || view !== 'graph') return;
+
+    canvas.setConfig({
+      captionsKeys: ['name'],
+      eventHandlers: {
+        onNodeClick: (node: any, event: MouseEvent) => {
+          event?.stopPropagation?.();
+          selectNode(node);
+        },
+        onBackgroundClick: () => selectNode(null),
       },
-      onBackgroundClick: () => selectNode(null),
-    },
-  });
+    });
 
-  canvas.setData(result);
-}, [result, view]);
+    const filteredNodes = result.nodes.map((node: any) => ({
+      ...node,
+      visible: !node.labels?.some((l: string) => hiddenLabels.has(l)),
+    }));
+
+    const filteredLinks = result.links.map((link: any) => ({
+      ...link,
+      visible: !hiddenRelationships.has(link.relationship),
+    }));
+
+    canvas.setData({ nodes: filteredNodes, links: filteredLinks });
+  }, [view, result, hiddenLabels, hiddenRelationships, selectNode]);
 
   if (loading) {
     return (
@@ -74,10 +89,28 @@ useEffect(() => {
 
   return (
     <div className="d-flex h-100" style={{ position: 'relative' }}>
-      <NodeSearchInput canvasRef={canvasRef} />
+      <div
+        className="graph-overlay-column"
+        style={{
+          position: 'absolute',
+          top: 12,
+          left: 12,
+          zIndex: 50,
+          maxHeight: '40%',
+          overflowY: 'auto',
+          pointerEvents: 'none',
+        }}
+      >
+        <div style={{ pointerEvents: 'auto' }}>
+          <NodeSearchInput canvasRef={canvasRef} />
+        </div>
+        <div style={{ pointerEvents: 'auto', marginTop: 8 }}>
+          <GraphLegendPanel result={result} />
+        </div>
+      </div>
       <falkordb-canvas
         ref={canvasRef}
-     style={{ flex: 1, height: '100%', display: 'block', minWidth: 0 }}
+        style={{ flex: 1, height: '100%', display: 'block', minWidth: 0 }}
       />
       <NodeDetailPanel />
     </div>
