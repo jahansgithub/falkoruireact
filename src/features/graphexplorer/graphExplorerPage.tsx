@@ -29,6 +29,36 @@ export default function GraphExplorerPage() {
 
     canvas.setConfig({
       captionsKeys: ['name'],
+
+ node: {
+    nodeCanvasObject: (node: any, ctx: CanvasRenderingContext2D, globalScale = 1) => {
+      if (node.x == null || node.y == null) return;
+      const r = node.size ?? 12;
+      const shape = getShapeForLabel(node.labels?.[0] ?? 'Unknown');
+
+      drawShape(ctx, shape, node.x, node.y, r);
+      ctx.fillStyle = node.color;
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#ffffff';
+      ctx.stroke();
+
+      if (globalScale > 0.6) {
+        const fontSize = 12 / globalScale;
+        ctx.font = `${fontSize}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#1A1A1A';
+        ctx.fillText(getNodeDisplayText(node), node.x, node.y + r + fontSize + 2);
+      }
+    },
+    // The clickable/hoverable area must match the shape, or clicks land in the wrong place
+    nodePointerAreaPaint: (node: any, color: string, ctx: CanvasRenderingContext2D) => {
+      const shape = getShapeForLabel(node.labels?.[0] ?? 'Unknown');
+      drawShape(ctx, shape, node.x, node.y, (node.size ?? 12) + 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    },
+  },
       eventHandlers: {
         onNodeClick: (node: any, event: MouseEvent) => {
           event?.stopPropagation?.();
